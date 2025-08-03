@@ -74,3 +74,31 @@ print(format(a, ".2f"))
 # 6045 정수 3개 평균 출력
 print((a+b+c)/3)  #괄호 없으면 a + b + c/3으로 인식
 
+# 6046 2배, 1/2배 출력
+print(n<<1)  #n을 2배(2의1승) 한 값
+print(n>>1)  #n을 반(2의1/2승)으로 나눈 값
+print(n<<2)  #n을 4배(2의2승) 한 값
+print(n>>2)  #n을 반으로 나눈 후 다시 반(2의1/4승)으로 나눈 값
+
+# 6046 2의 거듭제곱배로 출력
+print(2 << 10)  #2의10승=1024
+
+# 6052 정수 입력받아 참, 거짓 평가
+print(bool(n))
+
+# 6053 참, 거짓 바꾸기
+a = bool(int(input()))
+print(not a)
+
+* 비트단위(bitwise)연산자 :
+~(bitwise not), &(bitwise and), |(bitwise or), ^(bitwise xor),
+<<(bitwise left shift), >>(bitwise right shift)
+
+# 6059 비트단위로 not(~) 출력
+~n = -n - 1 와 -n = ~n + 1 과 같은 관계
+
+# 6063 3항연산
+"x if C else y" 의 형태로 작성
+C : True 또는 False 를 평가할 조건식 또는 값
+x : C의 평가 결과가 True 일 때 사용할 값
+y : C의 평가 결과가 True 가 아닐 때 사용할 값
