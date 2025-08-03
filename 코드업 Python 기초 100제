@@ -102,3 +102,8 @@ print(not a)
 C : True 또는 False 를 평가할 조건식 또는 값
 x : C의 평가 결과가 True 일 때 사용할 값
 y : C의 평가 결과가 True 가 아닐 때 사용할 값
+
+# 6076 for i in range(n)
+range(끝) : 0부터 끝-1까지
+range(시작, 끝) : 시작부터 끝-1까지
+range(시작, 끝, 증감) : 시작부터 끝-1까지 증감만
