@@ -126,3 +126,11 @@ print(a)
 for _ in range(n-1):  #n-1번째까지 더함
     a *= r
 print(a)
+
+# 6091 최소공배수
+day는 날 수, a/b/c는 방문 주기 a, b, c가 만나는 날은?
+d = 1
+while d%a!=0 or d%b!=0 or d%c!=0 :
+  d += 1
+print(d)
+
