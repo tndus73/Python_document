@@ -148,3 +148,6 @@ a.reverse()    #리스트 뒤집기
 print(*a)    #리스트 출력시 *앞에 붙여주면 언패킹(숫자 그대로 출력됨)
 for i in range(n-1, -1, -1):
   print(a[i], end=' ')
+
+# 6095 배열 만들기
+board = [[0 for _ in range(19)] for _ in range(19)] # 1차원 리스트에 0 19개 삽입 후 그렇게 만들어진 리스를를 19개 만들기
