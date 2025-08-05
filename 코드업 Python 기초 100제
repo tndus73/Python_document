@@ -134,3 +134,8 @@ while d%a!=0 or d%b!=0 or d%c!=0 :
   d += 1
 print(d)
 
+# 6092 리스트
+int(input()) : 숫자 1개 받을 때
+input().split() : 문자열 여러 개 받을 때 (문자 리스트)
+map(int, input().split()) : 숫자 여러 개 받을 때 (정수로 변환)
+list(map(int, input().split())) : 숫자 여러 개 받을 때 (정수, 리스트로 변환)
