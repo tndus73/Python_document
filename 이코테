@@ -1,0 +1,77 @@
+# 리스트 컴프리헨션 : 대괄호{}안에 조건문과 반복문을 넣어 리스트 초기화
+array = {i*i for i in range(1,10)}
+
+# 리스트 관련 함수
+변수명.append() #리스트 맨끝에 원소 삽입
+변수명.sort() #오름차순 정렬
+변수명.sort(reverse = True) #내림차순정렬
+변수명.reverse() #원소 순서 모두 뒤집
+변수명.insert(삽입위치 인덱스, 삽입값) #원소삽입
+변수명.remove(특정값) #특정값 제거
+
+# 리스트, 튜플, 딕셔너리, 집합 자료형 구분
+data = [] #리스트
+data = () #튜플 : 값변경 불가
+data = dict() #딕셔너리 : 키-값 쌍
+data['사과'] = 'apple'
+data = {} #집합 : 중복 허용X, 순서없음
+data = set([]) #집합 : 합집합 |, 교집합 &, 차집합 -
+
+# 집합 관련 함수
+변수명.add(특정값) #특정값 추가
+변수명.update([여러값들]) #여러값 한번에 추가
+변수명.remove(특정값) #특정값 제거
+
+# 입출력
+입력 개수 많으면 input() 대신 sys.stdin.readline() 함수 사용
+import sys
+sys.stdin.readline().restrip #realine까지 입력하면 엔터가 줄바꿈 기호로 입력, 공백 문자 제거하기 위해 rstrip()사용
+
+# 표준 라이브러리
+- 내장함수 (import 명령어 없이 사용)
+input() #입력
+print() #출력
+sum() #합
+min() #최소값
+max() #최대값
+eval()  #문자열 형태 수식 계산
+
+- itertools (순열, 조합)
+from itertools import permutations #순열(n개 뽑아 나열, 순서O)
+result = list(permutations(data, 3))
+from itertools import combinations #조합(n개 뽑아 나열, 순서X)
+result = list(comninations(data, 3))
+from itertools import product #중복순열(n개 뽑아 나열, 순서O, 중복O)
+result = list(product(data, repeat=3))
+from itertools import combinations_with_replacement #중복조합(n개 뽑아 나열, 순서X, 중복O)
+result = list(combinations_with_replacement(data, 3))
+
+- heapq (우선순위 큐 : 가장 작은 값을 꺼낼 수 있도록 도와줌(최소힙), 최대힙은 없으므로 원소 부호를 삽입 전 임시로 부호 변경 후 꺼낸 뒤 원소 바꿈)
+heapq.heappush() #힙에 원소 삽입
+heapq.heappop() #힙에 원소 꺼내기
+
+- bisect (이진탐색 : 정렬된 배열에서 특정 원소 찾을 때 효율적)
+bisect_left(a, x) #정렬된 순서 유지하면서 리스트 a에서 데이터 x를 삽입할 가장 왼쪽 인덱스 찾음
+bisect_right(a, x) #정렬된 순서 유지하면서 리스트 a에서 데이터 x를 삽입할 가장 오른쪽 인덱스 찾음
+* right_index - left_index하면 left_index <= x <= right_index인 원소의 개수 빠르게 계산
+
+- collections (deque:스택, 큐 기능, Counter:등장 횟수 세는 기능)
+from collections import deque
+data = deque([2,3,4])
+data.popleft() #첫번째 원소 제거
+data.pop() #마지막 원소 제거
+data.appendleft() #첫번째 원소 삽입
+data.append() #마지막 원소 삽입
+from collections import Counter
+data = Counter(['red','blue','red']
+print(data['red']) #'red'가 등장한 횟수 출력
+
+- math (수학적 기능 : 팩토리얼, 제곱근, 최대공약수 등)
+import math
+print(math.factorial(a)) #팩토리얼 출력 a!
+print(math.sqrt(a)) #제곱근 반환 루트a
+print(math.gcd(a,b)) #a,b 최대공약수
+print(math.pi) #파이(3.14)
+print(math.e) #자연상수e
+
+
