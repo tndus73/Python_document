@@ -17,8 +17,8 @@ n = int(input)
 x, y = 1, 1
 plans = input().split()
 
-dx = [0,0,-1,1]
-dy = [-1,1,0,0]
+dx = [0,0,-1,1]  #x 변화량 (열 이동 : 상하)
+dy = [-1,1,0,0]  #y 변화량 (행 이동 : 좌우)
 move_types = ['L','R','U','D']
 
 for plan in plans:  #이동 계획 확인
@@ -30,3 +30,62 @@ for plan in plans:  #이동 계획 확인
       continue
   x, y = nx, ny
 print(x,y)
+
+예시) 시각(00시00분00초부터 N시(0<=N<=23)59분59초까지) 중 N이 하나라도 포함되는 경우
+- 가능한 모든 시각의 경우를 하나씩 모두 세어 푸는 문제(완전 탐색)
+
+풀이)
+n = int(input())
+count = 0
+for i in range(n+1):  #시
+  for j in range(60):  #분
+    for k in rnage(60):  #초
+          if '3' in str(i)+str(j)+str(k):
+              count += 1
+print(count)
+
+예시) 왕실의 나이트(L자 형태로 이동 가능한 말)가 갈 수 있는 수
+1. 수평으로 두 칸 이동한 뒤 수직으로 한 칸 이동
+2. 수직으로 두 칸 이동한 뒤 수평으로 한 칸 이동
+- 행 위치를 1~8로 표현, 열 위치를 a~h로 표현
+ex) a1 -> 2
+
+풀이)
+input_data = input()  #현재 나이트 위치 입력
+row = int(input_data[1])
+column = int(ord(input_data[0])) - int(ord('a')) + 1
+
+#나이트가 이동 할 수 있는 8가지 방향 정의(위 문제 dx, dy 기능)
+steps = [(-2,-1), (-2,1), (-1,-2), (-1,2), (1,-2), (1,2), (2,-1), (2,1)]
+
+#8가지 방향에 대해 각 위치로 이동이 가능한지
+result = 0
+for step in steps:
+  #이동하고 싶은 위치 확인
+  next_row = row + step[0]
+  next_column = column + step[1]
+  #해당 위치로 이동 가능하면 카운트 증가
+  if next_row >= 1 and next_row <= 8 and next_column >= 1 and next_column <= 8:
+      result += 1
+print(result)
+
+예시) 문자열 재정렬(알파벳 오름차순 + 모든 숫자 더한 값)
+- 숫자인 경우 따로 합계 계싼
+- 알파벳의 경우 별도의 리스트에 저장 후 정렬
+
+풀이)
+data = input()
+alphabet = []
+num = 0
+#문자 확인하여 알파벳 숫자 구분
+for x in data:
+  if x.isalpha():
+      alphabet.append(x)
+  else:
+      num += int(x)
+#알파벳 오름차순 정렬
+alphabet.sort()
+#숫자 있는 경우 가장 뒤에 삽입
+if num != 0:
+    alphabet.append(str(num))
+print(''.join(alphabet))  #리스트가 전체 문자열일때, '구분자'.join(리스트)하면 구분자로 구분하여 출력
