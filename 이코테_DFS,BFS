@@ -2,14 +2,14 @@
   - 그래프 모양은 2차원 리스트
   - 스택(선입후출) 자료 구조 이용 → 리스트 이용
 ex)
-# DFS 메서드 정의  
+#DFS 메서드 정의  
 def dfs(graph, v, visited):
       visited[v] = True  #현재노드 방문처리
       print(v, end='')
       for i in graph[i]:  #현재 노드와 연결된 다른 노드를 재귀적으로 방문
           if not visited[i]:
               dfs(graph, i, visited)
-# 각 노드가 연결된 정보 표현 (2차원 리스트)        
+#각 노드가 연결된 정보 표현 (2차원 리스트)        
 graph = [
         [],  #노드번호가 대부분 1부터 시작하기 때문에 0번 인덱스는 비워둠
         [2,3,8],  #1번 인덱스와 인접한 노드
@@ -29,7 +29,7 @@ dfs(graph, 1, visited)
   - 리스트 사용하면 시간복잡도 높아짐
 ex)
 from collections import deque
-# BFS 메서드 정의
+#BFS 메서드 정의
 def bts(graph, start, visited):
     queue = deque([start])  #큐 구현하기 위해 deque라이브러리 사용
     visited[start] = True  #현재 노드 방문 처리
@@ -40,7 +40,7 @@ def bts(graph, start, visited):
               if not visited[i]:
                  queue.append(i)
                  visited[i] = True
-# 각 노드가 연결된 정보 표현 (2차원 리스트)        
+#각 노드가 연결된 정보 표현 (2차원 리스트)        
 graph = [
         [],  #노드번호가 대부분 1부터 시작하기 때문에 0번 인덱스는 비워둠
         [2,3,8],  #1번 인덱스와 인접한 노드
@@ -49,3 +49,41 @@ graph = [
   ]
 visited = [False] * 9  #각 노드가 방문한 정보를 1차원 리스트 자료형으로 표현
 bfs(graph, 1, visited)    
+
+예시) 음료수 얼려 한번에 만들 수 있는 아이스크림 개수(0끼리 모여있는 곳의 개수)
+1. 첫 줄에는 세로 길이 N, 가로 길이 M
+2. 두번째 줄부터 N+1번째 줄까지 얼음 틀 형태
+3. 구멍 뚫려있는 부분은 0, 칸막이가 존재하는 부분은 1
+
+* DFS로 해결
+1. 특정한 지점의 상, 하, 좌, 우를 살펴본 뒤 주변 지점 중에 값이 0이면서 아직 방문하지 않은 지점이 있다면 해당 지점을 방문
+2. 방문한 지점에서 다시 살펴본 후 방문 과정 반복하면, 연결된 모든 지점 방문
+3. 모든 노드에 대해 1~2번 과정 반복하여, 방문하지 않은 지점의 수 카운트
+
+풀이)
+n, m = map(int, input().split())
+#2차원 리스트 맵 정보 입력받기
+graph = []
+for i in range(n):
+    graph.append(list(map(int, input())))
+#DFS로 특정한 노드를 방문한 뒤 연결된 모든 노드들도 방문
+def dfs(x,y):
+  if x <= -1 or x >= n or y <= -1 or y >= m:  #주어진 범위 벗어나는 경우 종료
+      return False
+  if graph[x][y] == 0:  #현재 노드를 아직 방문하지 않았다면
+      graph[x][y] = 1  #해당 노드 방문 처리
+      #상,하,좌,우 모두 재귀적으로 호출
+      dfs(x-1, y)  #상
+      dfs(x+1, y)  #하
+      dfs(x, y-1)  #좌
+      dfs(x, y+1)  #우
+      return True
+  return False
+#모든 노드에 대해 음료수 채우기
+result = 0
+for i in range(n):
+    for j in range(m):
+        if dfs(i,j) == True:  #현재 위치에서 DFS수행
+            result += 1
+print(result)
+
