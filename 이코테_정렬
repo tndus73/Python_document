@@ -1,0 +1,76 @@
+# 정렬
+  - 순서대로 나열
+
+# 선택정렬
+- 가장 작은 데이터 선택해 맨 앞에 있는 데이터와 바꾸는 것 반복 (마지막은 어차피 그자리)
+- 이중 for문 사용
+- 시간복잡도 O(N의2승) : 등차수열 형태
+ex)
+array = [2,5,6,3,4,8,9]
+for i in range(len(array)):
+  min_index = i #가장 작은 원소 인덱스
+  for j in range(i+1, len(array)):
+      if array[min_index] > array[j]:
+          min_index = j
+  array[i], array[min_index] = array[min_index], array[i] #스와프(위치바꿈)
+print(array)
+
+# 삽입정렬
+- 맨 앞 원소를 정렬되어 있다고 판단 해 적절한 위치에 삽입
+- 선택정렬보다 빠름
+- 이중 for문 사용
+- 시간복잡도 O(N의2승) but, 이미 거의 정렬되어 있는 경우 O(K)
+ex)
+array = [2,5,6,3,4,8,9]
+for i in range(1, len(array)):
+    for j in range(i, 0, -1):  #1씩 감소하며 반복, j는 삽입하고자 하는 원소의 위치
+        if array[j] < array[j-1]:  #한칸씩 왼쪽으로 이동
+            array[j], array[j-1] = array[j-1], array[j]
+        else: #자기보다 작은 데이터 만나면 그 위치에서 멈춤
+            break
+print(array)
+
+# 퀵정렬
+- 맨 앞 원소 기준으로 큰 데이터(앞에서 오른쪽 탐색)와 작은 데이터(뒤에서 왼쪽 탐색) 위치 바꾸는 방법
+- 위치 바꾸다가, 서로 겹치는 구간이 생기는 경우! 기준값(맨앞)과 작은 데이터 위치를 변경!!!
+- 기준값 기준으로 분할 완료! 그러면 다시 기준값 기준 왼쪽은 왼쪽끼리, 오른쪽은 오른쪽끼리 다시 정렬 수행
+- 가장 많이 사용되는 알고리즘 & 가장 빠름
+- 시간복잡도 O(NlogN) but, 최악의 경우 O(N의2승)
+ex)
+array = [2,5,6,3,4,8,9]
+def quick_sort(array, start, end):
+    if start >= end:  #원소가 1개인 경우 종료
+        return
+    pivot = start  #피벗은 첫번째 원소
+    left = start+1  #가장왼쪽 left(첫번째원소 제외)
+    right = end  #가장오른쪽 right
+    while(left <= right):
+        #피벗보다 큰 데이터 찾을 때 까지 반복
+        while(left <= end and array[left] <= array[pivot]):
+              left += 1  #오른쪽으로 가는중
+        #피벗보다 작은 데이터 찾을 때 까지 반복
+        while(right <= start and array[right] <= array[pivot]):
+              right -= 1  #왼쪽으로 가는중
+        if(left > right):  #엇갈렸다면 작은 데이터와 피벗을 교체
+              array[right], array[pivot] = array[pivot], array[right]
+        else:  #엇갈리지 않았다면 작은 데이터와 큰 데이터 교체
+              array[left], array[right] = array[right], array[left]
+    # 분할 이후 왼쪽 부분과 오른쪽 부분에서 각각 정렬 수행
+    quick_sort(array, start, right-1)
+    quick_sort(array, right+1, end)
+quick_sort(array, 0, len(array)-1)
+print(array)
+
+ex) 간결하게 작성한 방법
+array = [2,5,6,3,4,8,9]
+def quick_sort(array):
+    if len(array) <= 1 :  #리스트가 하나 이하의 원소만 담고 있다면 종료
+        return array
+    pivot = array[0]  #피벗은 첫번째 원소
+    tail = array[1:]  #피벗을 제외한 리스트
+
+    left_side = [x for x in tail if x <= pivot]  #피벗보다 작으면 왼쪽부분으로
+    right_side = [x for x in tail if x >= pivot]  #피벗보다 크다면 오른쪽부분으로
+    # 분할 이후 왼쪽 부분과 오른쪽 부분에서 각각 정렬 수행하고, 전체 리스트 반환
+    return quick_sort(left_side) + [pivot] + quick_sort(right_side)
+print(quick_sort(array))
