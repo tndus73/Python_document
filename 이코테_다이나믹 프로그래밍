@@ -1,0 +1,153 @@
+# 다이나믹 프로그래밍(동적 계획법)
+- 메모리를 적절히 사용해 수행 시간 효율성을 비약적으로 향상시키는 방법
+- 탑다운(메모이제이션), 보텀업 방식으로 구성
+- 해당 조건을 만족할 때 사용
+1. 최적 부분 구조
+- 큰 문제를 작은 문제로 나눠 작은 문제의 답을 모아 큰 문제를 해결
+2. 중복되는 부분 문제
+- 동일한 작은 문제를 반복적으로 해결
+
+# 탑다운 방식(메모이제이션) : 하향식
+- 한 번 계산한 결과를 메모리 공간에 메모(캐싱이라고도 함)
+- 재귀함수 활용
+# 보텀업 방식 : 상향식
+- 다이나믹 프로그래밍의 전형적인 형태
+- 반복문 활용
+- 결과 저장용 리스트는 DP테이블이라고 함
+
+ex) 피보나치 수열(중복되는 부분 문제)
+# 재귀함수 활용
+def fibo(x):
+    if x == 1 or x == 2 :
+        return 1
+    return fibo(x-1) + fibo(x-2)
+print(fibo(4))
+
+# 탑다운 다이나믹 프로그래밍 활용
+d = [0]*100  # 한번 계산된 결과 메모이제이션하기 위한 리스트 초기화
+def fibo(x):
+    if x == 1 or x == 2 :  #종료조건
+        return 1
+    if d[x] != 0:  #이미 계산한 적 있으면 그대로 반환
+        return d[x]
+    d[x] = fibo(x-1) + fibo(x-2)
+    return d[x]
+print(fibo(99))
+
+# 보텀업 다이나믹 프로그래밍 활용
+d = [0]*100  # 앞서 계산된 결과 저장하기 위한 DP테이블 초기화
+# 첫번째 피보나치 수와 두번재 피보나치 수는 1
+d[1] = 1
+d[2] = 1
+n = 99
+# 피보나치 함수 반복문으로 구현
+for i in range(3, n+1):
+    d[i] = d[i-1] + d[i-2]
+print(d[n])
+
+예시) 개미 전사가 식량창고 N개에 대한 정보가 주어졌을 때 얻을 수 있는 식량의 최댓값
+- 정찰병에게 안들키기 위해 최소 한칸 이상 떨어진 식량창고를 약탈해야함.
+
+풀이)
+n = int(input())
+array = list(map(int, input().split()))
+d= [0]*100
+# 다이나믹 프로그래밍 진행(보텀업)
+d[0] = array[0]
+d[1] = max(array[0], array[1])
+for i in range(2,n)
+    d[i] = max(d[i-1], d[i-2]+array[i])
+print(d[n-1])
+
+예시) 1로 만들기 했을 때 연산을 사용하는 횟수의 최솟
+1. x가 5로 나눠 떨어지면, 5로 나눔
+2. x가 3으로 나눠 떨어지면, 3으로 나눔
+3. x가 2로 나눠 떨어지면, 2로 나눔
+4. x에서 1을 뺌
+
+풀이)
+x = int(input())
+d = [0]*30001  #앞서 계산된 결과를 저장하기 위한 DP테이블 초기화
+# 다이나믹 프로그래밍 진행(보텀업)
+for i in range(2, x+1):
+    d[i] = d[i-1]+1  #현재의 수에서 1빼는 경우
+    if i % 2 == 0:  #현재의 수가 2로 나눠 떨어지는 경우
+        d[i] = min(d[i], d[i//2]+1)
+    if i % 3 == 0:  #현재의 수가 3으로 나눠 떨어지는 경우
+        d[i] = min(d[i], d[i//3]+1)
+    if i % 5 == 0:  #현재의 수가 5으로 나눠 떨어지는 경우
+        d[i] = min(d[i], d[i//5]+1)
+print(d[x])
+
+예시) M원을 만들기 위한 최소한의 화폐 개수
+- ai = 금액 i를 만들 수 있는 최소한의 화페 개수
+- k = 각 화폐의 단위
+점화식 : 화폐 단위 k를 하나씩 확인하여
+ai-k 만드는 방법 존재, ai = min(ai, ai-k+1)
+ai-k 만드는 방법 존재x, ai = 무한대
+
+풀이)
+n, m = map(int, input().split())
+array = []
+for i in range(n):
+    array.append(int(input()))
+d = [10001]*(m+1)  #한 번 계산된 결과를 저장하기 위한 DP테이블 초기화(무한대로)
+# 다이나믹 프로그래밍 진행(보텀업)
+d[0] = 0
+for i in range(n):  #i는 화폐단위
+    for j in range(array[i], m+1):  #j는 금액
+        if d[j - array[i]] != 10001:  #(i-k)원을 만드는 방법이 존재하는 경우
+            d[j] = min(d[j], d[j-array[i]]+1)
+if d[m] == 10001:  #최종적으로 M원을 만드는 방법이 없는 경우
+    print(-1)
+else:
+    print(d[m])
+
+예시) n*m크기 금광에서 얻을 수 있는 금의 최대 크기
+- 첫번째열 어느 행에서든 출발
+- m-1번에 걸쳐 오른쪽 위, 오른쪽, 오른쪽 아래 중 하나로 이동
+
+풀이)
+for tc in range(int(input))):  #test case 입력
+    n, m = map(int, input().split())
+    array = list(map(int, input().split()))
+    # 다이나믹 프로그래밍 2차원 dp 테이블 초기화
+    dp = []
+    index = 0
+    for i in range(n):
+        dp.append(array[index:index+m])
+        index += m
+    # 다이나믹 프로그래밍 진행
+    for j in range(1, m):
+        for i in range(n):
+            # 왼쪽 위에서 오는 경우
+            if i == 0:
+                left_up = 0
+            else:
+                left_up = dp[i-1][j-1]
+            # 왼쪽 아래에서 오는 경우
+            if i == n-1:
+                left_down = 0
+            else:
+                left_down = dp[i+1][j-1]
+            # 왼쪽에서 오는 경우
+            left = dp[i][j-1]
+            dp[i][j] = dp[i][j] + max(left_up, left_down, left)
+      result = 0
+      for i in range(n):
+          result = max(result, dp[i][m-1])
+      print(result)
+
+예시) 전투력 높은 병사 앞쪽으로 내림차순 배치할때 병사수 최대가 되기 위해 열외시켜야 하는 병사
+- 가장 긴 증가하는 부분 수열(LIS) 알고리즘 활용
+
+풀이)
+n = int(input())
+array = list(map(int, input().split())
+array.reverse()  #최장 증가 수열 문제로 변환
+dp = [1]*n  #다이나믹 프로그래밍 1차원 dp테이블 초기화
+for i in range(1,n):  #가장 긴 증가하는 부분 수열 알고리즘 수행
+    for j in range(0,1):
+        if array[j] < array[i]:
+            dp[i] = max(dp[i], dp[j]+1)
+print(n - max(dp))  #열외해야 하는 병사 최소 
